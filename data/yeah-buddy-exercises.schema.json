@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yeah Buddy exercise catalog",
+  "description": "Schema for data/yeah-buddy-exercises.json — exercise records (EN/RU instructions, media paths).",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/exercise"
+  },
+  "$defs": {
+    "languageMap": {
+      "type": "object",
+      "description": "Instruction text keyed by ISO 639-1 language code (en, ru).",
+      "properties": {
+        "en": { "type": "string" },
+        "ru": { "type": "string" }
+      },
+      "required": ["en", "ru"],
+      "additionalProperties": false
+    },
+    "languageStepsMap": {
+      "type": "object",
+      "description": "Step-by-step instructions per language (en, ru).",
+      "properties": {
+        "en": { "$ref": "#/$defs/steps" },
+        "ru": { "$ref": "#/$defs/steps" }
+      },
+      "required": ["en", "ru"],
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "exercise": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "body_part": {
+          "type": "string",
+          "enum": [
+            "back",
+            "cardio",
+            "chest",
+            "lower arms",
+            "lower legs",
+            "neck",
+            "shoulders",
+            "upper arms",
+            "upper legs",
+            "waist"
+          ]
+        },
+        "equipment": { "type": "string", "minLength": 1 },
+        "instructions": { "$ref": "#/$defs/languageMap" },
+        "instruction_steps": { "$ref": "#/$defs/languageStepsMap" },
+        "muscle_group": { "type": "string", "minLength": 1 },
+        "secondary_muscles": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "target": { "type": "string", "minLength": 1 },
+        "media_id": { "type": "string", "minLength": 1 },
+        "image": {
+          "type": "string",
+          "pattern": "^images/.+\\.(jpg|jpeg|png)$"
+        },
+        "gif_url": {
+          "type": "string",
+          "pattern": "^videos/.+\\.gif$"
+        },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "body_part",
+        "equipment",
+        "instructions",
+        "instruction_steps",
+        "muscle_group",
+        "secondary_muscles",
+        "target",
+        "media_id",
+        "image",
+        "gif_url",
+        "created_at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
